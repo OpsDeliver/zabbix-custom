@@ -6,10 +6,13 @@
 #
 # All rights reserved - Do Not Redistribute
 #
-%w{
-  mysql-devel
-}.each do |package_name|
-    package package_name do
-    action :install
+
+package "mysql-devel" do
+  case node["platform_family"]
+  when 'rhel', 'fedora', 'arch', 'freebsd', 'suse'
+    package_name "mysql-devel"
+  when "debian", "ubuntu"
+    package_name "libmysqlclient-dev"
   end
+  action :install
 end
